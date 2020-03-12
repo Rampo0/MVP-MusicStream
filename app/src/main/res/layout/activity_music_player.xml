@@ -6,4 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".baseactivity.MusicPlayerActivity">
 
+    <Button
+        android:id="@+id/playBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/play"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </Button>
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/playBtn"
+        app:layout_constraintBottom_toBottomOf="@id/playBtn"
+        app:layout_constraintStart_toEndOf="@id/playBtn"
+        android:text="@string/next">
+
+    </Button>
+
+    <Button
+        android:id="@+id/prevBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/playBtn"
+        app:layout_constraintTop_toTopOf="@id/playBtn"
+        app:layout_constraintBottom_toBottomOf="@id/playBtn"
+        android:text="@string/prev">
+
+    </Button>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

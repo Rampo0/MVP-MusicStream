@@ -9,7 +9,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 class MusicApi(val iMusicView : IMusicView) : IMusicApi {
-    override fun Retrive() {
+    override fun Retrieve() {
         RetrofitClient.instance.GetMusics()
             .enqueue(object : retrofit2.Callback<List<Music>>{
                 override fun onFailure(call: Call<List<Music>>, t: Throwable) {

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">musicstream</string>
+    <string name="name_song">Name song</string>
+    <string name="play">Play</string>
+    <string name="next">Next</string>
+    <string name="prev">Prev</string>
 </resources>
