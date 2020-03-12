@@ -2,6 +2,7 @@ package me.rampoo.musicstream.baseactivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import me.rampoo.musicstream.R
 
 class MusicPlayerActivity : AppCompatActivity() {
 
