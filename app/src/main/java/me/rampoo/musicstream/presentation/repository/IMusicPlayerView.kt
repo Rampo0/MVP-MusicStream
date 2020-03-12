@@ -1,5 +1,7 @@
 package me.rampoo.musicstream.presentation.repository
 
-interface IMusicPlayerView {
+import me.rampoo.musicstream.data.model.Music
 
+interface IMusicPlayerView {
+    fun onPlay(music : Music)
 }

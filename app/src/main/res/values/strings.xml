@@ -4,4 +4,9 @@
     <string name="play">Play</string>
     <string name="next">Next</string>
     <string name="prev">Prev</string>
+    <string name="lyrics">LYRICS</string>
+    <string name="_1_37">1:37</string>
+    <string name="current_song_title">Current Song Title</string>
+    <string name="artist_name">Artist Name</string>
+    <string name="now_paling">Now Playing</string>
 </resources>

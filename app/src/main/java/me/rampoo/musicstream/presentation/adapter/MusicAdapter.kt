@@ -2,6 +2,7 @@ package me.rampoo.musicstream.presentation.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class MusicAdapter(val musicList: ArrayList<Music>, val context :Context) : Recy
             val intent = Intent(context , MusicPlayerActivity::class.java)
             intent.putExtra("position" , pos)
             intent.putExtra("playlist", musicList)
+//            intent.setFlags(FLAG_ACTIVITY_REORDER_TO_FRONT)
             context.startActivity(intent)
         }
 

@@ -4,6 +4,7 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import me.rampoo.musicstream.data.model.Music
 import me.rampoo.musicstream.domain.repository.IMusicPlayer
+import me.rampoo.musicstream.presentation.repository.IMusicPlayerView
 
 object MusicPlayer : IMusicPlayer {
 
@@ -12,6 +13,9 @@ object MusicPlayer : IMusicPlayer {
     }
     lateinit var currPlaylist : ArrayList<Music>
     var currPos : Int = 0
+    lateinit var currMusic : Music
+    lateinit var iMusicPlayerView: IMusicPlayerView
+    var isPause = false
 
     init {
         mediaPlayer!!.setOnPreparedListener {
@@ -24,12 +28,17 @@ object MusicPlayer : IMusicPlayer {
         if(currPos != pos){
             // play new song
             currPos = pos
-            var currMusic = currPlaylist[currPos]
+            currMusic = currPlaylist[currPos]
 
             mediaPlayer!!.reset()
             mediaPlayer!!.setDataSource(currMusic.song_file)
             mediaPlayer!!.prepareAsync()
         }
+
+        if(iMusicPlayerView != null){
+            iMusicPlayerView.onPlay(currMusic)
+        }
+
     }
 
     override fun Next() {
@@ -59,6 +68,10 @@ object MusicPlayer : IMusicPlayer {
         if(!mediaPlayer!!.isPlaying()){
             mediaPlayer.start()
         }
+    }
+
+    override fun SetIView(view: IMusicPlayerView) {
+        iMusicPlayerView = view
     }
 
     override fun SetPlaylist(playlist: ArrayList<Music>) {

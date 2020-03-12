@@ -2,12 +2,17 @@ package me.rampoo.musicstream.baseactivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_music_player.*
 import me.rampoo.musicstream.R
 import me.rampoo.musicstream.data.model.Music
 import me.rampoo.musicstream.domain.model.MusicPlayer
+import me.rampoo.musicstream.presentation.repository.IMusicPlayerView
+import java.lang.Exception
 
-class MusicPlayerActivity : AppCompatActivity() {
+class MusicPlayerActivity : AppCompatActivity() , IMusicPlayerView {
 
     var currPos: Int = 0
     lateinit var currPlaylist: ArrayList<Music>
@@ -20,26 +25,51 @@ class MusicPlayerActivity : AppCompatActivity() {
         currPlaylist = (intent.getSerializableExtra("playlist") as? ArrayList<Music>)!!
 
         MusicPlayer.SetPlaylist(currPlaylist)
+        MusicPlayer.SetIView(this)
         MusicPlayer.Play(currPos)
 
-        var isPause = false
+//        var isPause = false
 
-        playBtn.setOnClickListener {
-            if (isPause){
+        buttonPlay.setOnClickListener {
+            if (MusicPlayer.isPause){
                 MusicPlayer.Resume()
             }else{
                 MusicPlayer.Pause()
             }
-            isPause = !isPause
+            MusicPlayer.isPause = !MusicPlayer.isPause
         }
 
-        nextBtn.setOnClickListener {
+        buttonNext.setOnClickListener {
             MusicPlayer.Next()
         }
 
-        prevBtn.setOnClickListener {
+        buttonPrevious.setOnClickListener {
             MusicPlayer.Prev()
         }
+
+    }
+
+    override fun onPlay(music: Music) {
+        textSong.setText(music.name)
+        textArtist.setText(music.artist)
+        Picasso.get()
+            .load(music.image)
+            .networkPolicy(NetworkPolicy.OFFLINE)
+//            .memoryPolicy(MemoryPolicy.NO_CACHE)
+            .placeholder(R.drawable.albumart)
+            .centerCrop()
+            .resize(200, 260)
+//            .error(R.drawable.albumart)
+
+            .into(albumArt, object: com.squareup.picasso.Callback{
+                override fun onSuccess() {
+
+                }
+
+                override fun onError(e: Exception?) {
+
+                }
+            });
 
     }
 }
