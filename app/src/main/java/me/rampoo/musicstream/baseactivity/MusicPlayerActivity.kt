@@ -29,7 +29,6 @@ class MusicPlayerActivity : AppCompatActivity() , IMusicPlayerView {
         MusicPlayer.Play(currPos)
 
 //        var isPause = false
-
         buttonPlay.setOnClickListener {
             if (MusicPlayer.isPause){
                 MusicPlayer.Resume()
