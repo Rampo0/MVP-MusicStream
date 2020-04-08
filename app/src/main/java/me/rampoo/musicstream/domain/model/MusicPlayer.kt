@@ -12,8 +12,8 @@ object MusicPlayer : IMusicPlayer {
         setAudioStreamType(AudioManager.STREAM_MUSIC)
     }
     lateinit var currPlaylist : ArrayList<Music>
-    var currPos : Int = 0
-    lateinit var currMusic : Music
+    var currPos : Int = -1
+
     lateinit var iMusicPlayerView: IMusicPlayerView
     var isPause = false
 
@@ -28,7 +28,7 @@ object MusicPlayer : IMusicPlayer {
         if(currPos != pos){
             // play new song
             currPos = pos
-            currMusic = currPlaylist[currPos]
+            val currMusic = currPlaylist[currPos]
 
             mediaPlayer!!.reset()
             mediaPlayer!!.setDataSource(currMusic.song_file)
@@ -36,6 +36,7 @@ object MusicPlayer : IMusicPlayer {
         }
 
         if(iMusicPlayerView != null){
+            val currMusic = currPlaylist[currPos]
             iMusicPlayerView.onPlay(currMusic)
         }
 

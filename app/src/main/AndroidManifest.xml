@@ -12,18 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".baseactivity.DashboardActivity">
+        <activity android:name=".baseactivity.LibraryFragment"></activity>
+        <activity android:name=".baseactivity.SearchFragment" />
+        <activity android:name=".baseactivity.HomeFragment" />
+        <activity
+            android:name=".baseactivity.SplashscreenActivity"
+            android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".baseactivity.DashboardActivity" />
         <activity
             android:name=".baseactivity.MusicPlayerActivity"
-            android:theme="@style/FullScreen">
-        </activity>
-        <activity android:name=".MainActivity"></activity>
+            android:theme="@style/FullScreen" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

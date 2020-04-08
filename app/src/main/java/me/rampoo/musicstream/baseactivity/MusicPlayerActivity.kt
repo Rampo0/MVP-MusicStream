@@ -28,7 +28,6 @@ class MusicPlayerActivity : AppCompatActivity() , IMusicPlayerView {
         MusicPlayer.SetIView(this)
         MusicPlayer.Play(currPos)
 
-//        var isPause = false
         buttonPlay.setOnClickListener {
             if (MusicPlayer.isPause){
                 MusicPlayer.Resume()
@@ -51,24 +50,24 @@ class MusicPlayerActivity : AppCompatActivity() , IMusicPlayerView {
     override fun onPlay(music: Music) {
         textSong.setText(music.name)
         textArtist.setText(music.artist)
-        Picasso.get()
-            .load(music.image)
-            .networkPolicy(NetworkPolicy.OFFLINE)
-//            .memoryPolicy(MemoryPolicy.NO_CACHE)
-            .placeholder(R.drawable.albumart)
-            .centerCrop()
-            .resize(200, 260)
-//            .error(R.drawable.albumart)
-
-            .into(albumArt, object: com.squareup.picasso.Callback{
-                override fun onSuccess() {
-
-                }
-
-                override fun onError(e: Exception?) {
-
-                }
-            });
+//        Picasso.get()
+//            .load(music.image)
+//            .networkPolicy(NetworkPolicy.OFFLINE)
+////            .memoryPolicy(MemoryPolicy.NO_CACHE)
+//            .placeholder(R.drawable.albumart)
+//            .centerCrop()
+//            .resize(200, 260)
+////            .error(R.drawable.albumart)
+//
+//            .into(albumArt, object: com.squareup.picasso.Callback{
+//                override fun onSuccess() {
+//
+//                }
+//
+//                override fun onError(e: Exception?) {
+//
+//                }
+//            });
 
     }
 }
