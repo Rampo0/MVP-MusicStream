@@ -24,6 +24,7 @@ import me.rampoo.musicstream.presentation.adapter.ArtistAdapter
 import me.rampoo.musicstream.presentation.adapter.MusicAdapter
 import me.rampoo.musicstream.presentation.repository.IArtistView
 import me.rampoo.musicstream.presentation.repository.IMusicView
+import kotlinx.android.synthetic.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,10 +71,13 @@ class HomeFragment : Fragment() , IMusicView , IArtistView{
 
         view.title_action_bar.setText("Home")
         song_recycler_view = view.recycler_view as RecyclerView
-        song_recycler_view.layoutManager = LinearLayoutManager(activity)
+//        song_recycler_view.layoutManager = LinearLayoutManager(activity)
 
+//        view.recycler_view_playlist.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL , false)
         artist_recycler_view = view.recycler_view_playlist as RecyclerView
-        artist_recycler_view.layoutManager = LinearLayoutManager(activity)
+//        artist_recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL , false)
+//        artist_recycler_view.layoutManager = LinearLayoutManager(context)
+
 
         view.swipe_refresh_layout.setOnRefreshListener {
             runnable = Runnable {
