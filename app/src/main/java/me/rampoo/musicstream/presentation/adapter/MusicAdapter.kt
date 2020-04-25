@@ -13,12 +13,17 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.audio_controller.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import me.rampoo.musicstream.R
 import me.rampoo.musicstream.baseactivity.MusicPlayerActivity
 import me.rampoo.musicstream.data.model.Music
+import me.rampoo.musicstream.domain.model.MusicPlayer
+import me.rampoo.musicstream.presentation.repository.IMusicPlayerView
 import org.w3c.dom.Text
 
-class MusicAdapter(val musicList: ArrayList<Music>, val context :Context) : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
+class MusicAdapter(val musicList: ArrayList<Music>, val context :Context, val savedView : View, val iView : IMusicPlayerView) : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent  ,false)
         return ViewHolder(v)
@@ -39,12 +44,24 @@ class MusicAdapter(val musicList: ArrayList<Music>, val context :Context) : Recy
         holder.numberTv.setText((pos + 1).toString())
         holder.iconHolder.setImageDrawable(ContextCompat.getDrawable(context , R.drawable.music_style_white))
 
-        holder.itemView.setOnClickListener {
+        savedView.media_titles_audiocontroller.setOnClickListener {
             val intent = Intent(context , MusicPlayerActivity::class.java)
             intent.putExtra("position" , pos)
+            intent.putExtra("music", music)
             intent.putExtra("playlist", musicList)
-//            intent.setFlags(FLAG_ACTIVITY_REORDER_TO_FRONT)
             context.startActivity(intent)
+        }
+
+        holder.itemView.setOnClickListener {
+
+            MusicPlayer.Play(pos)
+
+            // audio controller ui change
+            MusicPlayer.SetIView(iView)
+            MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
+//            savedView.audiocontrol_title.setText(music.name)
+//            savedView.audiocontrol_text.setText(music.artist)
+
         }
 
     }

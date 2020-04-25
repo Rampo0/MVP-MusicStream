@@ -24,9 +24,10 @@ class MusicPlayerActivity : AppCompatActivity() , IMusicPlayerView {
         currPos = (intent.getSerializableExtra("position") as? Int)!!
         currPlaylist = (intent.getSerializableExtra("playlist") as? ArrayList<Music>)!!
 
-        MusicPlayer.SetPlaylist(currPlaylist)
+//        MusicPlayer.SetPlaylist(currPlaylist)
         MusicPlayer.SetIView(this)
-        MusicPlayer.Play(currPos)
+        MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
+//        MusicPlayer.Play(currPos)
 
         buttonPlay.setOnClickListener {
             if (MusicPlayer.isPause){
@@ -34,15 +35,16 @@ class MusicPlayerActivity : AppCompatActivity() , IMusicPlayerView {
             }else{
                 MusicPlayer.Pause()
             }
-            MusicPlayer.isPause = !MusicPlayer.isPause
         }
 
         buttonNext.setOnClickListener {
             MusicPlayer.Next()
+            MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
         }
 
         buttonPrevious.setOnClickListener {
             MusicPlayer.Prev()
+            MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
         }
 
     }

@@ -54,8 +54,11 @@ class LibraryFragment : Fragment() , IArtistView {
         val view : View = inflater!!.inflate(R.layout.fragment_library, container, false)
         view.title_action_bar.setText("Library")
 
+        view.refresh_front.setOnClickListener {
+            artistsApi.ArtistRetrieve()
+        }
+
         myrecycler_view = view.gridrecycler_view as RecyclerView
-//        myrecycler_view.layoutManager = LinearLayoutManager(activity)
 
         return view
     }

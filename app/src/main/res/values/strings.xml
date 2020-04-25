@@ -24,4 +24,5 @@
     <string name="songs">Songs</string>
     <string name="artists">Artists</string>
     <string name="popular_artists">Popular Artists</string>
+    <string name="daily_songs">Daily Songs</string>
 </resources>

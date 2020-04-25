@@ -15,7 +15,8 @@ object MusicPlayer : IMusicPlayer {
     var currPos : Int = -1
 
     lateinit var iMusicPlayerView: IMusicPlayerView
-    var isPause = false
+    var isPause = true
+    var started = false
 
     init {
         mediaPlayer!!.setOnPreparedListener {
@@ -24,22 +25,21 @@ object MusicPlayer : IMusicPlayer {
     }
 
     override fun Play(pos : Int) {
-
         if(currPos != pos){
             // play new song
             currPos = pos
             val currMusic = currPlaylist[currPos]
+            isPause = false
+            started = true
 
             mediaPlayer!!.reset()
             mediaPlayer!!.setDataSource(currMusic.song_file)
             mediaPlayer!!.prepareAsync()
         }
+    }
 
-        if(iMusicPlayerView != null){
-            val currMusic = currPlaylist[currPos]
-            iMusicPlayerView.onPlay(currMusic)
-        }
-
+    fun GetNowPlaying(): Music {
+        return currPlaylist[currPos]
     }
 
     override fun Next() {
@@ -62,12 +62,20 @@ object MusicPlayer : IMusicPlayer {
     override fun Pause() {
         if (mediaPlayer!!.isPlaying()){
             mediaPlayer.pause()
+            isPause = true
         }
     }
 
     override fun Resume() {
-        if(!mediaPlayer!!.isPlaying()){
+        if(!mediaPlayer!!.isPlaying() && started == true){
             mediaPlayer.start()
+            isPause = false
+        }else{
+            started = true
+            isPause = false
+            mediaPlayer!!.reset()
+            mediaPlayer!!.setDataSource(currPlaylist[currPos].song_file)
+            mediaPlayer!!.prepareAsync()
         }
     }
 
@@ -75,8 +83,13 @@ object MusicPlayer : IMusicPlayer {
         iMusicPlayerView = view
     }
 
+    override fun SetMusicForView(music: Music) {
+        iMusicPlayerView.onPlay(music)
+    }
+
     override fun SetPlaylist(playlist: ArrayList<Music>) {
         currPlaylist = playlist
+        currPos = 0
     }
 
 }

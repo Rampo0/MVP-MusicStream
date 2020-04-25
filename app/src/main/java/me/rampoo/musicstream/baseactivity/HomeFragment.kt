@@ -1,5 +1,6 @@
 package me.rampoo.musicstream.baseactivity
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -25,6 +26,9 @@ import me.rampoo.musicstream.presentation.adapter.MusicAdapter
 import me.rampoo.musicstream.presentation.repository.IArtistView
 import me.rampoo.musicstream.presentation.repository.IMusicView
 import kotlinx.android.synthetic.*
+import kotlinx.android.synthetic.main.activity_dashboard.*
+import me.rampoo.musicstream.domain.model.MusicPlayer
+import me.rampoo.musicstream.presentation.repository.IMusicPlayerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,7 +40,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomeFragment : Fragment() , IMusicView , IArtistView{
+class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -44,6 +48,10 @@ class HomeFragment : Fragment() , IMusicView , IArtistView{
     lateinit var artist_recycler_view : RecyclerView
     lateinit var musicApi : MusicApi
     lateinit var artistApi: ArtistApi
+    var isPlaylistAssign = false
+    val HOME_FRAG_TAG = "HomeTag"
+    val LIB_FRAG_TAG = "LibTag"
+    val SEARCH_FRAG_TAG = "SearchTag"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,13 +79,16 @@ class HomeFragment : Fragment() , IMusicView , IArtistView{
 
         view.title_action_bar.setText("Home")
         song_recycler_view = view.recycler_view as RecyclerView
-//        song_recycler_view.layoutManager = LinearLayoutManager(activity)
-
-//        view.recycler_view_playlist.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL , false)
         artist_recycler_view = view.recycler_view_playlist as RecyclerView
-//        artist_recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL , false)
-//        artist_recycler_view.layoutManager = LinearLayoutManager(context)
 
+        view.menu_button.setOnClickListener {
+            // change fragment to lib
+
+            activity!!.bottom_navigation_view.menu.getItem(1).setChecked(true)
+            val parentActivity = activity as DashboardActivity
+            parentActivity.globalSwitchFragment(LIB_FRAG_TAG, 1)
+
+        }
 
         view.swipe_refresh_layout.setOnRefreshListener {
             runnable = Runnable {
@@ -117,9 +128,25 @@ class HomeFragment : Fragment() , IMusicView , IArtistView{
             }
     }
 
+    override fun onStart() {
+        super.onStart()
+        MusicPlayer.SetIView(this)
+        if (isPlaylistAssign){
+            MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
+        }
+    }
+
     override fun onRetriveResult(musics: ArrayList<Music>) {
-         val adapter = activity?.let { MusicAdapter(musics , it) }
-         song_recycler_view.adapter = adapter
+
+        MusicPlayer.SetPlaylist(musics)
+        isPlaylistAssign = true
+
+        val adapter = activity?.let { MusicAdapter(musics , it, this.view!!, this) }
+        song_recycler_view.adapter = adapter
+
+        this.view!!.audiocontrol_title.setText(MusicPlayer.GetNowPlaying().name.toString())
+        this.view!!.audiocontrol_text.setText(MusicPlayer.GetNowPlaying().artist.toString())
+
     }
 
     override fun onRetrieveError(messages: String) {
@@ -133,6 +160,11 @@ class HomeFragment : Fragment() , IMusicView , IArtistView{
 
     override fun onRetrieveArtistError(messages: String) {
         Toast.makeText(context , messages , Toast.LENGTH_LONG).show()
+    }
+
+    override fun onPlay(music: Music) {
+        this.view!!.audiocontrol_title.setText(music.name)
+        this.view!!.audiocontrol_text.setText(music.artist)
     }
 }
 

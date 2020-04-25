@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -17,7 +18,7 @@ import me.rampoo.musicstream.presentation.repository.IMusicView
 import java.util.*
 import kotlin.collections.ArrayList
 
-class DashboardActivity : AppCompatActivity(), IMusicView {
+class DashboardActivity : AppCompatActivity() {
 
     val context : Context = this
     lateinit var memorizePage : Stack<Int>
@@ -49,18 +50,14 @@ class DashboardActivity : AppCompatActivity(), IMusicView {
         setContentView(R.layout.activity_dashboard)
         // Initialize
         Initalize()
-
-        // recycleViewMusic.layoutManager = LinearLayoutManager(this)
-        // val musicApi = MusicApi(this)
-        // musicApi.Retrieve()
-
     }
 
     private fun Initalize(){
-        currentNavTAG = HOME_FRAG_TAG
+        currentNavTAG = ""
         memorizePage = Stack<Int>()
+        switchFragment(HOME_FRAG_TAG,1)
         memorizePage.push(0)
-        supportFragmentManager.beginTransaction().add(R.id.fragment_main , HomeFragment()).commit()
+
         bottom_navigation_view.setOnNavigationItemSelectedListener (OnNavigationItemSelectListener)
     }
 
@@ -70,24 +67,31 @@ class DashboardActivity : AppCompatActivity(), IMusicView {
     }
 
     private fun handleNavOnBackPressed(){
-        memorizePage.pop()
+
         if(memorizePage.size > 0){
-            val prevMenu = memorizePage.peek()
-            if(prevMenu != null){
-                bottom_navigation_view.menu.getItem(prevMenu).setChecked(true)
-                when(prevMenu){
-                    0 -> {
-                        switchFragment(HOME_FRAG_TAG,0)
-                    }
-                    1 -> {
-                        switchFragment(LIB_FRAG_TAG,0)
-                    }
-                    2 -> {
-                        switchFragment(SEARCH_FRAG_TAG,0)
+            memorizePage.pop()
+            if(memorizePage.size > 0) {
+                val prevMenu = memorizePage.peek()
+                if (prevMenu != null) {
+                    bottom_navigation_view.menu.getItem(prevMenu).setChecked(true)
+                    when (prevMenu) {
+                        0 -> {
+                            switchFragment(HOME_FRAG_TAG, 0)
+                        }
+                        1 -> {
+                            switchFragment(LIB_FRAG_TAG, 0)
+                        }
+                        2 -> {
+                            switchFragment(SEARCH_FRAG_TAG, 0)
+                        }
                     }
                 }
             }
         }
+    }
+
+    public fun globalSwitchFragment(tag : String, flag : Int){
+        switchFragment(tag, flag)
     }
 
     private fun switchFragment(tag : String, flag : Int){
@@ -107,10 +111,15 @@ class DashboardActivity : AppCompatActivity(), IMusicView {
                     }
 
                     if(supportFragmentManager.findFragmentByTag(HOME_FRAG_TAG) != null){
-                        supportFragmentManager.beginTransaction().show(supportFragmentManager.findFragmentByTag(HOME_FRAG_TAG)!!).commit()
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left)
+                            .show(supportFragmentManager.findFragmentByTag(HOME_FRAG_TAG)!!).commit()
                         if(flag == 1) supportFragmentManager.beginTransaction().addToBackStack(null).commit()
                     }else{
-                        supportFragmentManager.beginTransaction().add(R.id.fragment_main, HomeFragment(), HOME_FRAG_TAG).commit()
+
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left)
+                            .add(R.id.fragment_main, HomeFragment(), HOME_FRAG_TAG).commit()
                         if(flag == 1) supportFragmentManager.beginTransaction().addToBackStack(null).commit()
                     }
                 }
@@ -129,10 +138,14 @@ class DashboardActivity : AppCompatActivity(), IMusicView {
                     }
 
                     if(supportFragmentManager.findFragmentByTag(LIB_FRAG_TAG) != null){
-                        supportFragmentManager.beginTransaction().show(supportFragmentManager.findFragmentByTag(LIB_FRAG_TAG)!!).commit()
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left)
+                            .show(supportFragmentManager.findFragmentByTag(LIB_FRAG_TAG)!!).commit()
                         if(flag == 1) supportFragmentManager.beginTransaction().addToBackStack(null).commit()
                     }else{
-                        supportFragmentManager.beginTransaction().add(R.id.fragment_main, LibraryFragment(), LIB_FRAG_TAG).commit()
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left)
+                            .add(R.id.fragment_main, LibraryFragment(), LIB_FRAG_TAG).commit()
                         if(flag == 1) supportFragmentManager.beginTransaction().addToBackStack(null).commit()
                     }
                 }
@@ -152,10 +165,14 @@ class DashboardActivity : AppCompatActivity(), IMusicView {
                     }
 
                     if(supportFragmentManager.findFragmentByTag(SEARCH_FRAG_TAG) != null){
-                        supportFragmentManager.beginTransaction().show(supportFragmentManager.findFragmentByTag(SEARCH_FRAG_TAG)!!).commit()
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left)
+                            .show(supportFragmentManager.findFragmentByTag(SEARCH_FRAG_TAG)!!).commit()
                         if(flag == 1) supportFragmentManager.beginTransaction().addToBackStack(null).commit()
                     }else{
-                        supportFragmentManager.beginTransaction().add(R.id.fragment_main, SearchFragment(), SEARCH_FRAG_TAG).commit()
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left)
+                            .add(R.id.fragment_main, SearchFragment(), SEARCH_FRAG_TAG).commit()
                         if(flag == 1) supportFragmentManager.beginTransaction().addToBackStack(null).commit()
                     }
                 }
@@ -163,12 +180,4 @@ class DashboardActivity : AppCompatActivity(), IMusicView {
         }
     }
 
-    override fun onRetriveResult(musics: ArrayList<Music>) {
-        // val adapter = MusicAdapter(musics , context)
-        // recycleViewMusic.adapter = adapter
-    }
-
-    override fun onRetrieveError(messages: String) {
-        // Toast.makeText(context , messages , Toast.LENGTH_LONG).show()
-    }
 }
