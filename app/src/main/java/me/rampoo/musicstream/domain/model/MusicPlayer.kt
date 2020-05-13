@@ -43,6 +43,15 @@ object MusicPlayer : IMusicPlayer, MediaPlayer.OnPreparedListener {
         }
     }
 
+    fun Stop(){
+        isPause = true
+        started = false
+        val currMusic = currPlaylist[currPos]
+        mediaPlayer!!.reset()
+        mediaPlayer!!.setDataSource(currMusic.song_file)
+        mediaPlayer!!.prepareAsync()
+    }
+
     fun GetNowPlaying(): Music {
         return currPlaylist[currPos]
     }

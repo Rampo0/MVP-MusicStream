@@ -1,26 +1,19 @@
 package me.rampoo.musicstream.baseactivity
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import me.rampoo.musicstream.R
-import me.rampoo.musicstream.data.model.Music
-import me.rampoo.musicstream.domain.model.MusicApi
-import me.rampoo.musicstream.presentation.adapter.MusicAdapter
-import me.rampoo.musicstream.presentation.repository.IMusicView
+import me.rampoo.musicstream.domain.model.MusicPlayer
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -31,6 +24,7 @@ class DashboardActivity : AppCompatActivity() {
     val SEARCH_FRAG_TAG = "SearchTag"
     lateinit var currentNavTAG : String
     lateinit var connectionHandler: Handler
+    var connectFlag = false
 
     private val OnNavigationItemSelectListener = BottomNavigationView.OnNavigationItemSelectedListener{
         when(it.itemId){
@@ -69,9 +63,20 @@ class DashboardActivity : AppCompatActivity() {
         if(isConnected){
             no_inet_layout.visibility = View.INVISIBLE
             fragment_main.visibility = View.VISIBLE
+
+            if(connectFlag){
+                connectFlag = false
+                val intent = Intent(this, DashboardActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
+                startActivity(intent)
+                finish()
+            }
+
         }else{
             fragment_main.visibility = View.INVISIBLE
             no_inet_layout.visibility = View.VISIBLE
+            connectFlag = true
+            MusicPlayer.Stop()
         }
 
         val runnable = Runnable {
