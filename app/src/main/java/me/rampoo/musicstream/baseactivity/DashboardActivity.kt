@@ -1,9 +1,13 @@
 package me.rampoo.musicstream.baseactivity
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -26,6 +30,7 @@ class DashboardActivity : AppCompatActivity() {
     val LIB_FRAG_TAG = "LibTag"
     val SEARCH_FRAG_TAG = "SearchTag"
     lateinit var currentNavTAG : String
+    lateinit var connectionHandler: Handler
 
     private val OnNavigationItemSelectListener = BottomNavigationView.OnNavigationItemSelectedListener{
         when(it.itemId){
@@ -50,6 +55,29 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dashboard)
         // Initialize
         Initalize()
+
+        connectionHandler = Handler()
+        connectionCheck()
+
+    }
+
+    private fun connectionCheck(){
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+
+        if(isConnected){
+            no_inet_layout.visibility = View.INVISIBLE
+            fragment_main.visibility = View.VISIBLE
+        }else{
+            fragment_main.visibility = View.INVISIBLE
+            no_inet_layout.visibility = View.VISIBLE
+        }
+
+        val runnable = Runnable {
+            this.connectionCheck()
+        }
+        connectionHandler.postDelayed(runnable , 1000)
     }
 
     private fun Initalize(){

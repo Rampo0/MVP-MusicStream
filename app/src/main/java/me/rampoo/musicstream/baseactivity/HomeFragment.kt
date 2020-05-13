@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
 import android.widget.Adapter
 import android.widget.Toast
 import androidx.activity.OnBackPressedDispatcher
@@ -81,6 +83,10 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
         view.title_action_bar.setText("Home")
         song_recycler_view = view.recycler_view as RecyclerView
         artist_recycler_view = view.recycler_view_playlist as RecyclerView
+
+        val animation = AnimationUtils.loadAnimation(activity, R.anim.anim_text_highlight)
+        animation.setInterpolator(LinearInterpolator())
+        view.audiocontrol_title.startAnimation(animation)
 
         view.menu_button.setOnClickListener {
             // change fragment to lib

@@ -5,11 +5,13 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.view.animation.AnimationUtils
 import android.widget.SeekBar
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_music_player.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import me.rampoo.musicstream.R
 import me.rampoo.musicstream.data.model.Music
 import me.rampoo.musicstream.domain.model.MusicPlayer
@@ -46,6 +48,8 @@ class MusicPlayerActivity : AppCompatActivity() , IMusicPlayerView {
         seekBarHandler = Handler()
         seekBarProcess()
 
+//        startTextAnimation()
+
         playerSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if(fromUser){
@@ -79,6 +83,11 @@ class MusicPlayerActivity : AppCompatActivity() , IMusicPlayerView {
             MusicPlayer.Prev()
             MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
         }
+    }
+
+    fun startTextAnimation(){
+        val animation = AnimationUtils.loadAnimation(this, R.anim.anim_text_highlight)
+        textSong.startAnimation(animation)
     }
 
     fun getMinuteFormat(duration : Int) : String{
