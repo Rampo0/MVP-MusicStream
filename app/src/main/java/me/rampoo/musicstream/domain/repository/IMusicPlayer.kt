@@ -12,4 +12,5 @@ interface IMusicPlayer {
     fun SetIView(view : IMusicPlayerView)
     fun SetMusicForView(music : Music)
     fun SetPlaylist(playlist : ArrayList<Music>)
+    fun SeekTo(progress : Int)
 }

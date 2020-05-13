@@ -1,6 +1,7 @@
 package me.rampoo.musicstream.baseactivity
 
 import android.app.Activity
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -83,11 +84,29 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
 
         view.menu_button.setOnClickListener {
             // change fragment to lib
-
             activity!!.bottom_navigation_view.menu.getItem(1).setChecked(true)
             val parentActivity = activity as DashboardActivity
             parentActivity.globalSwitchFragment(LIB_FRAG_TAG, 1)
+        }
 
+        view.button_toggle_play_pause.setOnClickListener {
+            if (MusicPlayer.isPause){
+                MusicPlayer.Resume()
+            }else{
+                MusicPlayer.Pause()
+            }
+        }
+
+        view.button_next.setOnClickListener {
+            MusicPlayer.Next()
+            MusicPlayer.SetIView(this)
+            MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
+        }
+
+        view.button_prev.setOnClickListener {
+            MusicPlayer.Prev()
+            MusicPlayer.SetIView(this)
+            MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
         }
 
         view.swipe_refresh_layout.setOnRefreshListener {
@@ -131,8 +150,17 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
     override fun onStart() {
         super.onStart()
         MusicPlayer.SetIView(this)
+        onBackChangeUIAudioController()
+    }
+
+    fun onBackChangeUIAudioController(){
         if (isPlaylistAssign){
             MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
+            if (!MusicPlayer!!.isPause){
+                button_toggle_play_pause.setImageResource(R.drawable.ic_pause_white)
+            }else{
+                button_toggle_play_pause.setImageResource(R.drawable.ic_play)
+            }
         }
     }
 
@@ -165,6 +193,19 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
     override fun onPlay(music: Music) {
         this.view!!.audiocontrol_title.setText(music.name)
         this.view!!.audiocontrol_text.setText(music.artist)
+        this.view!!.button_toggle_play_pause.setImageResource(R.drawable.ic_pause_black_24dp)
+    }
+
+    override fun onMusicPause() {
+        this.view!!.button_toggle_play_pause.setImageResource(R.drawable.ic_play)
+    }
+
+    override fun onMusicResume() {
+        this.view!!.button_toggle_play_pause.setImageResource(R.drawable.ic_pause_black_24dp)
+    }
+
+    override fun onPrepared(mp: MediaPlayer?) {
+
     }
 }
 

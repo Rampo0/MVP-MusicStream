@@ -57,11 +57,10 @@ class MusicAdapter(val musicList: ArrayList<Music>, val context :Context, val sa
             MusicPlayer.Play(pos)
 
             // audio controller ui change
-            MusicPlayer.SetIView(iView)
-            MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
-//            savedView.audiocontrol_title.setText(music.name)
-//            savedView.audiocontrol_text.setText(music.artist)
-
+            if(!MusicPlayer.isPause) {
+                MusicPlayer.SetIView(iView)
+                MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
+            }
         }
 
     }
@@ -72,9 +71,6 @@ class MusicAdapter(val musicList: ArrayList<Music>, val context :Context, val sa
         val numberTv = itemView.findViewById(R.id.number) as TextView
         val iconHolder = itemView.findViewById(R.id.image) as ImageView
 
-//        private val imageView = itemView.findViewById(R.id.roundImage) as ImageView
-//        val titleTv = itemView.findViewById(R.id.tvSongName) as TextView
-//
 //        fun loadUrl(url:String){
 //            Picasso.get().load(url).resize(100, 100)
 //                .centerCrop().into(imageView)

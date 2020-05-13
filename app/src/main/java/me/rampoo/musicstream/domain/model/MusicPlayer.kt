@@ -6,7 +6,7 @@ import me.rampoo.musicstream.data.model.Music
 import me.rampoo.musicstream.domain.repository.IMusicPlayer
 import me.rampoo.musicstream.presentation.repository.IMusicPlayerView
 
-object MusicPlayer : IMusicPlayer {
+object MusicPlayer : IMusicPlayer, MediaPlayer.OnPreparedListener {
 
     val mediaPlayer : MediaPlayer? = MediaPlayer().apply {
         setAudioStreamType(AudioManager.STREAM_MUSIC)
@@ -20,12 +20,16 @@ object MusicPlayer : IMusicPlayer {
 
     init {
         mediaPlayer!!.setOnPreparedListener {
-            it.start()
+            it.setOnPreparedListener(this)
+        }
+
+        mediaPlayer!!.setOnCompletionListener {
+            Next()
         }
     }
 
     override fun Play(pos : Int) {
-        if(currPos != pos){
+        if(currPos != pos || !started){
             // play new song
             currPos = pos
             val currMusic = currPlaylist[currPos]
@@ -35,11 +39,24 @@ object MusicPlayer : IMusicPlayer {
             mediaPlayer!!.reset()
             mediaPlayer!!.setDataSource(currMusic.song_file)
             mediaPlayer!!.prepareAsync()
+            iMusicPlayerView.onPlay(currMusic)
         }
     }
 
     fun GetNowPlaying(): Music {
         return currPlaylist[currPos]
+    }
+
+    fun getDuration() : Int {
+        return mediaPlayer!!.duration
+    }
+
+    fun getCurrentPosition() : Int{
+        return mediaPlayer!!.currentPosition
+    }
+
+    fun isPlaying(): Boolean{
+        return mediaPlayer!!.isPlaying
     }
 
     override fun Next() {
@@ -63,6 +80,7 @@ object MusicPlayer : IMusicPlayer {
         if (mediaPlayer!!.isPlaying()){
             mediaPlayer.pause()
             isPause = true
+            iMusicPlayerView.onMusicPause()
         }
     }
 
@@ -77,6 +95,7 @@ object MusicPlayer : IMusicPlayer {
             mediaPlayer!!.setDataSource(currPlaylist[currPos].song_file)
             mediaPlayer!!.prepareAsync()
         }
+        iMusicPlayerView.onMusicResume()
     }
 
     override fun SetIView(view: IMusicPlayerView) {
@@ -87,9 +106,29 @@ object MusicPlayer : IMusicPlayer {
         iMusicPlayerView.onPlay(music)
     }
 
+    fun prepareMediaPlayerOnGetPlaylist(){
+        val currMusic = currPlaylist[currPos]
+        mediaPlayer!!.reset()
+        mediaPlayer!!.setDataSource(currMusic.song_file)
+        mediaPlayer!!.prepareAsync()
+    }
+
     override fun SetPlaylist(playlist: ArrayList<Music>) {
         currPlaylist = playlist
         currPos = 0
+        prepareMediaPlayerOnGetPlaylist()
+    }
+
+    override fun SeekTo(progress: Int) {
+        mediaPlayer?.seekTo(progress)
+    }
+
+    override fun onPrepared(mp: MediaPlayer?) {
+        if(started){
+            mp?.start()
+        }
+
+        iMusicPlayerView.onPrepared(mp)
     }
 
 }
