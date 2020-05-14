@@ -40,6 +40,7 @@ object MusicPlayer : IMusicPlayer, MediaPlayer.OnPreparedListener {
             mediaPlayer!!.setDataSource(currMusic.song_file)
             mediaPlayer!!.prepareAsync()
             iMusicPlayerView.onPlay(currMusic)
+
         }
     }
 

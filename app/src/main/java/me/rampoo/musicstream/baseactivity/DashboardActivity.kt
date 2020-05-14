@@ -1,9 +1,12 @@
 package me.rampoo.musicstream.baseactivity
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -11,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import me.rampoo.musicstream.R
+import me.rampoo.musicstream.domain.model.CreateNotification
 import me.rampoo.musicstream.domain.model.MusicPlayer
 import java.util.*
 
@@ -25,6 +29,7 @@ class DashboardActivity : AppCompatActivity() {
     lateinit var currentNavTAG : String
     lateinit var connectionHandler: Handler
     var connectFlag = false
+    lateinit var notificationManager: NotificationManager
 
     private val OnNavigationItemSelectListener = BottomNavigationView.OnNavigationItemSelectedListener{
         when(it.itemId){
@@ -52,7 +57,20 @@ class DashboardActivity : AppCompatActivity() {
 
         connectionHandler = Handler()
         connectionCheck()
+        createChannel()
 
+    }
+
+    private fun createChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channel = NotificationChannel(CreateNotification.CHANNEL_ID,
+                "Music App" , NotificationManager.IMPORTANCE_LOW)
+
+            notificationManager = getSystemService(NotificationManager::class.java) as NotificationManager
+            if(notificationManager != null){
+                notificationManager.createNotificationChannel(channel)
+            }
+        }
     }
 
     private fun connectionCheck(){
@@ -213,4 +231,10 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            notificationManager.cancelAll()
+        }
+    }
 }

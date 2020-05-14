@@ -1,7 +1,12 @@
 package me.rampoo.musicstream.baseactivity
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -30,7 +35,9 @@ import me.rampoo.musicstream.presentation.repository.IArtistView
 import me.rampoo.musicstream.presentation.repository.IMusicView
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import me.rampoo.musicstream.domain.model.CreateNotification
 import me.rampoo.musicstream.domain.model.MusicPlayer
+import me.rampoo.musicstream.domain.services.OnClearFromRecentService
 import me.rampoo.musicstream.presentation.repository.IMusicPlayerView
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,18 +50,34 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
+class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var song_recycler_view : RecyclerView
-    lateinit var artist_recycler_view : RecyclerView
-    lateinit var musicApi : MusicApi
+    lateinit var song_recycler_view: RecyclerView
+    lateinit var artist_recycler_view: RecyclerView
+    lateinit var musicApi: MusicApi
     lateinit var artistApi: ArtistApi
     var isPlaylistAssign = false
     val HOME_FRAG_TAG = "HomeTag"
     val LIB_FRAG_TAG = "LibTag"
     val SEARCH_FRAG_TAG = "SearchTag"
+    lateinit var rootActivity: Activity
+
+    val broadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val action = intent!!.extras!!.getString("actionname")
+            when (action){
+                CreateNotification.ACTION_PLAY ->{
+                    if (MusicPlayer.isPause){
+                        MusicPlayer.Resume()
+                    }else{
+                        MusicPlayer.Pause()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +91,13 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
 
         artistApi = ArtistApi(this)
         artistApi.ArtistRetrieve()
+
+        rootActivity = activity as DashboardActivity
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            rootActivity.registerReceiver(broadcastReceiver , IntentFilter("NOTIF_ACTION"))
+            rootActivity.startService(Intent(rootActivity.baseContext , OnClearFromRecentService::class.java ))
+        }
 
     }
 
@@ -107,12 +137,18 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
             MusicPlayer.Next()
             MusicPlayer.SetIView(this)
             MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
+
+//            CreateNotification.createNotification( activity as DashboardActivity, MusicPlayer.GetNowPlaying()
+//                , R.drawable.ic_pause_black_24dp)
         }
 
         view.button_prev.setOnClickListener {
             MusicPlayer.Prev()
             MusicPlayer.SetIView(this)
             MusicPlayer.SetMusicForView(MusicPlayer.GetNowPlaying())
+
+//            CreateNotification.createNotification( activity as DashboardActivity, MusicPlayer.GetNowPlaying()
+//                , R.drawable.ic_pause_black_24dp)
         }
 
         view.swipe_refresh_layout.setOnRefreshListener {
@@ -181,6 +217,9 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
         this.view!!.audiocontrol_title.setText(MusicPlayer.GetNowPlaying().name.toString())
         this.view!!.audiocontrol_text.setText(MusicPlayer.GetNowPlaying().artist.toString())
 
+        CreateNotification.createNotification( activity as DashboardActivity, MusicPlayer.GetNowPlaying()
+            , R.drawable.ic_play)
+
     }
 
     override fun onRetrieveError(messages: String) {
@@ -200,14 +239,27 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView{
         this.view!!.audiocontrol_title.setText(music.name)
         this.view!!.audiocontrol_text.setText(music.artist)
         this.view!!.button_toggle_play_pause.setImageResource(R.drawable.ic_pause_black_24dp)
+
+        CreateNotification.createNotification( activity as DashboardActivity, MusicPlayer.GetNowPlaying()
+            , R.drawable.ic_pause_black_24dp)
+
     }
 
     override fun onMusicPause() {
         this.view!!.button_toggle_play_pause.setImageResource(R.drawable.ic_play)
+        CreateNotification.createNotification( activity as DashboardActivity, MusicPlayer.GetNowPlaying()
+            , R.drawable.play)
     }
 
     override fun onMusicResume() {
         this.view!!.button_toggle_play_pause.setImageResource(R.drawable.ic_pause_black_24dp)
+        CreateNotification.createNotification( activity as DashboardActivity, MusicPlayer.GetNowPlaying()
+            , R.drawable.ic_pause_black_24dp)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        rootActivity.unregisterReceiver(broadcastReceiver)
     }
 
     override fun onPrepared(mp: MediaPlayer?) {

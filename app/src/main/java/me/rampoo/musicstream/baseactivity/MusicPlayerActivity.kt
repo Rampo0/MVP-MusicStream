@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_music_player.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import me.rampoo.musicstream.R
 import me.rampoo.musicstream.data.model.Music
+import me.rampoo.musicstream.domain.model.CreateNotification
 import me.rampoo.musicstream.domain.model.MusicPlayer
 import me.rampoo.musicstream.presentation.repository.IMusicPlayerView
 import java.lang.Exception
@@ -121,14 +122,22 @@ class MusicPlayerActivity : AppCompatActivity() , IMusicPlayerView {
         textArtist.setText(music.artist)
         buttonPlay.setImageResource(R.drawable.ic_pause_white)
         processUIforCurrentTime(0)
+
+        CreateNotification.createNotification( this, MusicPlayer.GetNowPlaying()
+            , R.drawable.ic_pause_black_24dp)
+
     }
 
     override fun onMusicPause() {
         buttonPlay.setImageResource(R.drawable.ic_play)
+        CreateNotification.createNotification( this, MusicPlayer.GetNowPlaying()
+            , R.drawable.ic_play)
     }
 
     override fun onMusicResume() {
         buttonPlay.setImageResource(R.drawable.ic_pause_white)
+        CreateNotification.createNotification( this, MusicPlayer.GetNowPlaying()
+            , R.drawable.ic_pause_black_24dp)
     }
 
     fun processUIforDuration(duration : Int){

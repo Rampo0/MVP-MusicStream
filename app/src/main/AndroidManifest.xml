@@ -30,6 +30,8 @@
             android:name=".baseactivity.MusicPlayerActivity"
             android:theme="@style/FullScreen" />
         <activity android:name=".MainActivity" />
+        <receiver android:name=".domain.services.NotificationActionService"></receiver>
+        <service android:name=".domain.services.OnClearFromRecentService"></service>
     </application>
 
 </manifest>
