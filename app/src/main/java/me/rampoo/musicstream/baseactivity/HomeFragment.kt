@@ -210,7 +210,7 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView {
 
         MusicPlayer.SetPlaylist(musics)
         isPlaylistAssign = true
-
+        //
         val adapter = activity?.let { MusicAdapter(musics , it, this.view!!, this) }
         song_recycler_view.adapter = adapter
 
