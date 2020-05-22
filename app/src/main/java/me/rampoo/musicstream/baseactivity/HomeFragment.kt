@@ -216,6 +216,8 @@ class HomeFragment() : Fragment(), IMusicPlayerView , IMusicView , IArtistView {
 
         this.view!!.audiocontrol_title.setText(MusicPlayer.GetNowPlaying().name.toString())
         this.view!!.audiocontrol_text.setText(MusicPlayer.GetNowPlaying().artist.toString())
+        progressBar.visibility = View.INVISIBLE
+        swipe_refresh_layout.visibility = View.VISIBLE
 
         CreateNotification.createNotification( activity as DashboardActivity, MusicPlayer.GetNowPlaying()
             , R.drawable.ic_play)

@@ -14,12 +14,33 @@
         >
     </include>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutProgressBar"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="@id/inc_title_action_bar"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:indeterminateTint="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+        </ProgressBar>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inc_title_action_bar">
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
