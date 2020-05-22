@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "24304495360",
+    "firebase_url": "https://rampooapps-8f1ad.firebaseio.com",
+    "project_id": "rampooapps-8f1ad",
+    "storage_bucket": "rampooapps-8f1ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24304495360:android:00365f7f0fe270d4",
+        "android_client_info": {
+          "package_name": "me.rampoo.apps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24304495360-0lbott7r1liv55ke2hc528ujip3gdp5p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.rampoo.apps",
+            "certificate_hash": "e28098b76d8d044d8e8d1a0eadd541eeb066465a"
+          }
+        },
+        {
+          "client_id": "24304495360-4lban3ajh8qv661ual816ci2llmp6tf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqa6zj5fDzPcBvO3H9ic9X-CBm9Egj4Fs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24304495360-4lban3ajh8qv661ual816ci2llmp6tf0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24304495360:android:36836ca762ef1a86",
+        "android_client_info": {
+          "package_name": "me.rampoo.flutter_basic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24304495360-lbjtk73qhfi9au2audsv7srlqh52bqk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.rampoo.flutter_basic",
+            "certificate_hash": "e28098b76d8d044d8e8d1a0eadd541eeb066465a"
+          }
+        },
+        {
+          "client_id": "24304495360-4lban3ajh8qv661ual816ci2llmp6tf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqa6zj5fDzPcBvO3H9ic9X-CBm9Egj4Fs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24304495360-4lban3ajh8qv661ual816ci2llmp6tf0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24304495360:android:81a25dfc8b37317b07e1e5",
+        "android_client_info": {
+          "package_name": "me.rampoo.musicstream"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24304495360-6bfl39vs8gumhs69h14390is92q4p4ij.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "me.rampoo.musicstream",
+            "certificate_hash": "2bef30c96fd585524af39245cae648ba23ba6581"
+          }
+        },
+        {
+          "client_id": "24304495360-4lban3ajh8qv661ual816ci2llmp6tf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqa6zj5fDzPcBvO3H9ic9X-CBm9Egj4Fs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24304495360-4lban3ajh8qv661ual816ci2llmp6tf0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
